@@ -20,20 +20,6 @@ class CreateSmsCreditsTable extends Migration {
       
       $table->timestamps();
     });
-    
-    // Give out users free SMS credits.
-    $users = User::all();
-    if ($users) {
-      foreach ($users as $user) {
-        DB::table('sms_credits')->insert([
-          'id'              => $user->id,
-          'credits'         => 5,
-          'purchases_left'  => 1,
-          'created_at'      => \Carbon\Carbon::now(),
-          'updated_at'      => \Carbon\Carbon::now(),
-        ]);
-      }
-    }
 	}
 
 	/**

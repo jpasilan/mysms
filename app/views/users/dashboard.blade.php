@@ -25,8 +25,7 @@
             <div class="row" style="margin-top: 10px">
               <div class="col-md-12">
                 <small>
-                  <strong>Note:</strong> The button will be disabled after trying it out once. This is so as not to use up the developer's real SMS credits. Also, the purchase function is in test mode so this will not work with real credit cards. Use the following details 
-                  for testing:
+                  <strong>Note:</strong> The button will be disabled after trying it out twice. Also, the purchase function is in test mode so this will not work with real credit card numbers. Instead, use the following for testing:
                   <ul class="list-unstyled" style="margin-top: 10px">
                     <li><strong>Card Number:</strong> 4242 4242 4242 4242</li>
                     <li><strong>CVC:</strong> any 3 digit number</li>
@@ -86,7 +85,20 @@
 {{ HTML::script('https://checkout.stripe.com/checkout.js') }}
 <script type="text/javascript">
   jQuery(function() {
-    // Initialize variables.
+    // Initialize SMS related variables.
+    var smsForm = jQuery('#send-sms'),
+        smsFormButton = smsForm.find('button[type="submit"]');
+    
+    // Bind the submit event to the SMS form.
+    smsForm.submit(function(e) {
+      e.preventDefault();
+      
+      // Disable the submit button, then submit the form.
+      smsFormButton.prop('disabled', true);
+      smsForm.get(0).submit();
+    });
+    
+    // Initialize Stripe related variables.
     var stripeForm = jQuery('#buy-credits'),
         stripeFormButton = stripeForm.find('button[type="submit"]'),
         allowedCredits = 5;
