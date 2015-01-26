@@ -1,9 +1,9 @@
 ## MySMS
 
-Simple SMS messaging portal integrated with the Twilio SMS Messaging Service. Includes too the following packages:
+Simple SMS messaging portal integrated with the Twilio SMS Messaging Service. This also include the following packages:
 
 * Sentry Cartalyst (for authentication)
-* Stripe API (for purchasing SMS credits. This is currently in test mode though)
+* Stripe API (for purchasing credits but is currently in test mode though)
 
 ## Development
 
