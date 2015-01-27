@@ -7,7 +7,7 @@ Simple SMS messaging portal integrated with the Twilio SMS Messaging Service. Th
 
 ## Development
 
-The development/test site is currently hosted at http://confident-storms-end-45-187939.apse1.nitrousbox.com/. Test accounts are as follows:
+The development/test site is currently hosted at [Cloud9](http://mysms-jpasilan.c9.io). Test accounts are as follows:
 
 * john@example.com/johntest
 * jane@example.com/janetest
