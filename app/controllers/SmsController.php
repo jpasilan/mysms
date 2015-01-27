@@ -5,37 +5,54 @@ use Repository\Payment\PaymentRepositoryInterface;
 
 class SmsController extends BaseController {
   
+  /**
+   * @var SmsRepositoryInterface
+   */
   protected $sms;
-  
+
+  /**
+   * @var PaymentRepositoryInterface
+   */
   protected $payment;
-  
+
+  /**
+   * Constructor
+   * 
+   * @param SmsRepositoryInterface      $sms
+   * @param PaymentRepositoryInterface  $payment
+   */
   public function __construct(SmsRepositoryInterface $sms, PaymentRepositoryInterface $payment)
   {
     $this->sms = $sms;
     $this->payment = $payment;
   }
-  
+
+  /**
+   * Method that will send the SMS message.
+   * 
+   * @return Redirect
+   */
   public function sendMessage()
   {
     $message = ['danger' => 'An error has occurred. Please try again.'];
-    
+
     if (Request::isMethod('post')) {
       $rules = [
         'mobile_from' => 'required',
         'mobile_to'   => 'required',
         'sms_message' => 'required|max:160',
       ];
-      
+
       $validator = Validator::make(Input::all(), $rules);
       if ($validator->passes()) {
         $user = Sentry::getUser();
         $status = $this->sms->sendMessage($user->id, Input::get('mobile_from'), Input::get('mobile_to'), Input::get('sms_message'));
-        
+
         if ('success' == $status['status']) {
           $message = ['success' => $status['message']];
         } else {
           $message = ['danger' => $status['message']];
-          
+
           return Redirect::to('dashboard')
             ->withMessage($message)
             ->withInput();
@@ -47,10 +64,15 @@ class SmsController extends BaseController {
           ->withInput();
       }
     }
-    
+
     return Redirect::to('dashboard')->withMessage($message);
   }
-  
+
+  /**
+   * Method that allows users to purchase SMS credits.
+   * 
+   * @return Redirect
+   */
   public function purchaseSmsCredits()
   {
     $message = ['danger' => 'An error has occurred. Please try again.'];
@@ -102,5 +124,5 @@ class SmsController extends BaseController {
 
     return Redirect::to('dashboard')->withMessage($message);
   }
-  
+
 }

@@ -23,26 +23,49 @@ class User extends Cartalyst\Sentry\Users\Eloquent\User implements UserInterface
 	 */
 	protected $hidden = array('password', 'remember_token');
   
+  /**
+   * HasOne relation between the User and SmsCredit.
+   */
   public function smsCredit()
   {
     return $this->hasOne('SmsCredit', 'id');  
   }
  
+  /**
+   * Check whether user is allowed to purchase credits.
+   * 
+   * @return boolean
+   */
   public function canPurchaseCredits()
   {
     return $this->smsCredit && ($this->smsCredit->purchases_left > 0);  
   }
   
+  /**
+   * Check whether user still has SMS credits left.
+   *
+   * @return boolean
+   */
   public function hasSmsCredits()
   {
     return $this->getSmsCredits() > 0;
   }
   
+  /** 
+   * Get the number of SMS credits.
+   * 
+   * @return int
+   */
   public function getSmsCredits()
   {
     return $this->smsCredit ? $this->smsCredit->credits : 0;
   }
   
+  /**
+   * Deduct the SMS credits by the number of $count.
+   * 
+   * @param   int   $count    Number of credits to deduct.
+   */
   public function deductSmsCredit($count)
   {
     $currentCredits = $this->getSmsCredits();
@@ -52,6 +75,11 @@ class User extends Cartalyst\Sentry\Users\Eloquent\User implements UserInterface
     ]);
   }
   
+  /**
+   * Attribute accessor to get the user's full name.
+   * 
+   * @return string
+   */
   public function getFullNameAttribute()
   {
     return Str::title($this->first_name . ' ' . $this->last_name);

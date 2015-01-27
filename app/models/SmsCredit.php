@@ -16,6 +16,9 @@ class SmsCredit extends Eloquent {
    */
   protected $fillable = ['id', 'credits', 'purchases_left'];
 
+  /**
+   * HasOne relation between SmsCredit and User.
+   */
   public function user()
   {
     return $this->belongsTo('User', 'id');      

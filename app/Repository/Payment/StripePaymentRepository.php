@@ -6,18 +6,36 @@ use Stripe_Charge, Stripe_Error, Stripe_CardError;
 
 class StripePaymentRepository implements PaymentRepositoryInterface {
   
+  /**
+   * @var Stripe API key.
+   */
   protected $stripeKey;
   
+  /**
+   * Set the Stripe API key.
+   * 
+   * @param string  $key    API key
+   */
   public function setStripeKey($key)
   {
     $this->stripeKey = $key;
   }
   
+  /**
+   * Get the Stripe API key.
+   */
   public function getStripeKey()
   {
     return ! empty($this->stripeKey) ? $this->stripeKey : Config::get('services.stripe.secret');  
   }
   
+  /**
+   * Run the charge by card token.
+   * 
+   * @param string  $token        Card token.
+   * @param float   $amount       Amount to charge.
+   * @param string  $description  Charge description.
+   */
   public function chargeByToken($token, $amount, $description)
   {
     return $this->charge([
@@ -27,6 +45,13 @@ class StripePaymentRepository implements PaymentRepositoryInterface {
     ]);
   }
 
+  /**
+   * Execute the payment or charge.
+   * 
+   * @param array   $data       Payment data
+   * @param string  $apiKey     API key.
+   * @return array
+   */
   public function charge(array $data, $apiKey = '')
   {
     // Setting the API key.

@@ -4,6 +4,9 @@ use Illuminate\Support\ServiceProvider;
 
 class PaymentRepositoryServiceProvider extends ServiceProvider {
   
+  /**
+   * Register provider.
+   */
   public function register()
   {
     $this->app->bind(

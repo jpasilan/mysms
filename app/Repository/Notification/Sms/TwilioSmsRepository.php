@@ -6,13 +6,24 @@ use User, Exception;
 
 class TwilioSmsRepository implements SmsRepositoryInterface {
   
+  /**
+   * @var Twilio client object.
+   */
   protected $client;
   
+  /**
+   * Constructor
+   */
   public function __construct()
   {
     $this->client = $this->authenticate();
   }
   
+  /**
+   * Authenticate with Twilio.
+   * 
+   * @return Services_Twilio
+   */
   private function authenticate()
   {
     $sid = Config::get('services.twilio.sid');
@@ -20,7 +31,17 @@ class TwilioSmsRepository implements SmsRepositoryInterface {
     
     return new Services_Twilio($sid, $token);
   }
-  
+
+  /**
+   * Send an SMS message.
+   * 
+   * @param int     $userId     User ID
+   * @param string  $from       "From" mobile number
+   * @param string  $to         "To" mobile number
+   * @param string  $message    SMS message
+   * @return array
+   * @throws Exception
+   */
   public function sendMessage($userId, $from, $to, $message)
   {
     $user = User::find($userId);
